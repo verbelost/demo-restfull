@@ -1,9 +1,9 @@
 package com.springboot.demo.service;
 
-import com.springboot.demo.dao.RoleDao;
-import com.springboot.demo.dao.UserDao;
 import com.springboot.demo.model.Role;
 import com.springboot.demo.model.User;
+import com.springboot.demo.repository.RoleRepository;
+import com.springboot.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,58 +15,47 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
     @Autowired
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
     @Override
     public void addUser(User user, List<String> rolesValues) {
-        makeChanges(user, rolesValues);
-        userDao.addUser(user);
-    }
-
-    @Transactional
-    @Override
-    public void updateUser(User user, List<String> rolesValues) {
-        makeChanges(user, rolesValues);
-        userDao.updateUser(user);
-    }
-
-    private void makeChanges(User user, List<String> rolesValues) {
         Set<Role> roles = new HashSet<>();
         for (String role: rolesValues) {
-            if (roleDao.countRoles(role) > 0) {
-                roles.add(roleDao.getRoleByName(role));
+            if (roleRepository.countRoleByName(role) > 0) {
+                roles.add(roleRepository.getRoleByName(role));
             } else {
                 Role newRole = new Role();
                 newRole.setName(role);
-                roleDao.addRole(newRole);
+                roleRepository.save(newRole);
                 roles.add(newRole);
             }
         }
         user.setRoles(roles);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Transactional
     @Override
-    public void removeUser(int id) {
-        userDao.removeUser(id);
+    public void removeUser(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Transactional
     @Override
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
+    public User getUserById(Long id) {
+        return userRepository.getOne(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> listUsers() {
-        return userDao.listUsers();
+        return userRepository.findAll();
     }
 
 }

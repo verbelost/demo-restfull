@@ -1,6 +1,7 @@
 package com.springboot.demo.service;
 
-import com.springboot.demo.dao.UserDao;
+
+import com.springboot.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        return userDao.getUserByName(name);
+        return userRepository.findByName(name);
     }
 }

@@ -17,8 +17,6 @@ import java.util.List;
 @RequestMapping(value = "/admin")
 public class AdminController {
     private UserService userService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -35,22 +33,18 @@ public class AdminController {
 
     @PostMapping(value = "/users/add")
     public String addUser(@ModelAttribute("user") User user, @RequestParam List<String> rolesValues) {
-        if (user.getId() == 0) {
-            this.userService.addUser(user, rolesValues);
-        } else {
-            this.userService.updateUser(user, rolesValues);
-        }
+        this.userService.addUser(user, rolesValues);
         return "redirect:/admin/users";
     }
 
     @GetMapping(value = "/users/delete")
-    public String deleteUser(@RequestParam("id") int id) {
+    public String deleteUser(@RequestParam("id") Long id) {
         this.userService.removeUser(id);
         return "redirect:/admin/users";
     }
 
     @GetMapping(value = "/editUser")
-    public String editUser(@RequestParam("id") int id, Model model) {
+    public String editUser(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", this.userService.getUserById(id));
         model.addAttribute("users", this.userService.listUsers());
         model.addAttribute("ROLES", Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
