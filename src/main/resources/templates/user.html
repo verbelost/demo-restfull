@@ -1,29 +1,73 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta acccharset="utf-8"/>
-    <title>User list</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body>
 <div>
-    <form th:align="right" th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+    <nav class="navbar navbar-light navbar-expand-md bg-dark">
+        <div class="container-fluid">
+            <span class="text-light"><strong th:text="${user.getUsername()}"></strong></span>
+            <span class="text-light"> with roles: </span>
+            <span class="text-light" id="userRoles"><strong th:each="role : ${user.getRoles()}"
+                                             th:text="${role.getSimpleName()} + ' '"></strong></span>
+            <ul class="nav navbar-nav flex-nowrap ml-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link text-muted" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="d-flex">
+        <div style="width: 224px;height: 1000px;">
+            <ul class="nav nav-pills flex-column mx-auto" id="nav" style="padding: 0px;margin: 13px;">
+                <li class="nav-item"><a class="nav-link active border rounded" href="/user">User</a></li>
+            </ul>
+        </div>
+        <div class="flex-fill" style="width: 969px;background-color: #f5f5f5;padding: 0px;">
+            <h1 style="margin: 0px;padding: 14px;height: 50px;line-height: 19px;">User information page</h1>
+            <div class="border rounded" style="background-color: #ffffff;padding: 0px;margin: 21px;width: 1000px;">
+                <h1 style="font-size: 25px;background-color: #f2f2f2;height: 47px;margin: 0px;padding: 15px;line-height: 17px;">
+                    About user</h1>
+                <div style="background-color: #ffffff;width: 1000px;padding: 29px;height: 150px;">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 50px;">ID</th>
+                            <th style="width: 120px;height: 50px;">User name</th>
+                            <th style="width: 200px;">Password</th>
+                            <th style="width: 150px;">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody style="height: 100px;">
+                        <tr style="height: 36px;">
+                            <td style="width: 50px;height: 63px;" th:text="${user.getId()}"></td>
+                            <td style="height: 63px;width: 120px;" th:text="${user.getUsername()}"></td>
+                            <td style="height: 63px;width: 200px;" th:text="${user.getPassword()}"></td>
+                            <td style="height: 63px;width: 150px;" th:each="role : ${user.getRoles()}"
+                                th:text="${role.getSimpleName()} + ' '"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <h1>User info:</h1>
-    <table border="1">
-        <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Password</th>
-        </tr>
-        <tr>
-            <td th:text="${user.getId()}"></td>
-            <td th:text="${user.getUsername()}"></td>
-            <td th:text="${user.getPassword()}"></td>
-    </table>
-</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="/myscripts/user.js"></script>
 </body>
+
 </html>
