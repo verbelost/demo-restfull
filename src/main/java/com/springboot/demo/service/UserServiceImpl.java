@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void addUser(User user, List<String> rolesValues) {
+    public void addUser(User user, String[] rolesValues) {
         Set<Role> roles = new HashSet<>();
         for (String role: rolesValues) {
             if (roleRepository.countRoleByName(role) > 0) {

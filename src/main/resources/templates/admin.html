@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+<div>
+    <nav class="navbar navbar-light navbar-expand-md bg-dark">
+        <div class="container-fluid">
+            <span class="text-light"><strong th:text="${userAuthentication.getUsername()}"></strong></span>
+            <span class="text-light"> with roles: </span>
+            <span class="text-light"><strong th:each="role : ${userAuthentication.getRoles()}"
+                                             th:text="${role.getSimpleName()} + ' '"></strong></span>
+            <ul class="nav navbar-nav flex-nowrap ml-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link text-muted" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="d-flex">
+        <div style="width: 224px;height: 1000px;">
+            <ul class="nav nav-pills flex-column mx-auto" style="padding: 0px;margin: 13px;">
+                <li class="nav-item"><a class="nav-link active border rounded" href="/admin">Admin</a></li>
+                <li class="nav-item"><a class="nav-link border rounded" href="/user">User</a></li>
+            </ul>
+        </div>
+        <div class="flex-fill" style="width: 666px;background-color: #f5f5f5;padding: 0px;">
+            <h1 style="margin: 0px;padding: 14px;height: 50px;line-height: 19px;">Admin panel</h1>
+            <div style="padding: 14px;">
+                <ul class="nav nav-tabs" style="width: 898px;">
+                    <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Users
+                        table</a></li>
+                    <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">New User</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="tab-1">
+                        <div class="border rounded" style="background-color: #ffffff; height: 1000px;width: 900px;">
+                            <h1 style="font-size: 25px;background-color: #f2f2f2;height: 47px;margin: 0px;padding: 15px;line-height: 17px;">
+                                All users</h1>
+                            <div style="background-color: #ffffff;width: 897px;padding: 29px;height: 216px;">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 77px;">ID</th>
+                                        <th style="width: 200px;height: 50px;">User name</th>
+                                        <th style="width: 200px;">Role</th>
+                                        <th style="width: 163px;">Edit</th>
+                                        <th style="width: 143px;">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody style="height: 116px;">
+                                    <tr style="height: 63px;" th:each="user : ${users}">
+                                        <td style="width: 77px;height: 63px;" th:text="${user.getId()}"></td>
+                                        <td style="height: 63px;width: 200px;" th:text="${user.getName()}"></td>
+                                        <td style="height: 63px;width: 200px;" th:id="user + ${user.getId()}"><span
+                                                th:each="role : ${user.getRoles()}"
+                                                th:text="${role.getSimpleName()} + ' '"></span></td>
+                                        <td style="height: 63px;width: 163px;">
+                                            <button class="btn btn-info" type="button" data-toggle="modal"
+                                                    data-target="#edit"
+                                                    th:href="@{/admin/edite(id=${user.getId()})}"
+                                                    th:attr="data-id=${user.getId()}, data-name=${user.getUsername()}">Edit
+                                            </button>
+                                            <div class="modal fade" role="dialog" tabindex="-1" id="edit">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="height: 51px;">
+                                                            <h4 class="modal-title">Edit user</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="width: 475px;height: 451px;">
+                                                            <form style="height: 434px;background-color: #ffffff;width: 457px;" action="#"
+                                                                 th:action="@{/admin/add}" th:object="${user}" method="post">
+                                                                <div class="form-row justify-content-center align-items-center"
+                                                                     style="width: 455px;margin: 0px;background-color: #ffffff;height: 364px;">
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>ID</strong><br></label><input
+                                                                                class="form-control form-control-sm"
+                                                                                type="text"
+                                                                                id="idEdite"
+                                                                                th:field="*{id}"
+                                                                                style="width: 219px;padding: 0px;"
+                                                                                readonly=""></div>
+                                                                    </div>
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>User
+                                                                                name</strong><br></label><input
+                                                                                class="form-control form-control-sm"
+                                                                                type="text"
+                                                                                th:field="*{name}"
+                                                                                style="width: 219px;padding: 0px;"
+                                                                                id="nameEdite"></div>
+                                                                    </div>
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>Password</strong><br></label><input
+                                                                                class="form-control form-control-sm"
+                                                                                type="text"
+                                                                                style="width: 219px;height: 31px;padding: 0px;"
+                                                                                th:field="*{password}"
+                                                                                value=""></div>
+                                                                    </div>
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 356px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>Role</strong><br></label><select
+                                                                                class="border rounded form-control form-control-sm"
+                                                                                multiple=""
+                                                                                style="width: 219px;height: 50px;" name="select">
+                                                                            <option value="ROLE_ADMIN">ADMIN</option>
+                                                                            <option value="ROLE_USER">USER</option>
+                                                                        </select></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-secondary" type="button"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                    <button class="btn btn-primary text-light" type="submit"
+                                                                       role="button">Edite</button></div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="height: 63px;width: 143px;"><a class="btn btn-danger"
+                                                                                  data-toggle="modal"
+                                                                                  data-target="#delete"
+                                                                                  th:href="@{/admin/delete(id=${user.getId()})}"
+                                                                                  th:attr="data-id=${user.getId()}, data-name=${user.getUsername()}">Delete</a>
+                                            <div class="modal fade" role="dialog" tabindex="-1" id="delete">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="height: 51px;">
+                                                            <h4 class="modal-title">Delete user</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="width: 475px;height: 451px;">
+                                                            <form style="height: 434px;background-color: #ffffff;width: 457px;"
+                                                                  method="get">
+                                                                <div class="form-row justify-content-center align-items-center"
+                                                                     style="width: 455px;margin: 0px;background-color: #ffffff;height: 364px;">
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>ID</strong><br></label><input
+                                                                                class="form-control form-control-sm"
+                                                                                type="text" id="id"
+                                                                                style="width: 219px;padding: 10px;"
+                                                                                readonly=""></div>
+                                                                    </div>
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>User
+                                                                                name</strong><br></label><input
+                                                                                class="form-control form-control-sm"
+                                                                                type="text" id="name"
+                                                                                style="width: 219px;padding: 10px;"
+                                                                                readonly=""></div>
+                                                                    </div>
+                                                                    <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                                                         style="width: 356px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                                                        <div class="form-group" style="margin: 0px;">
+                                                                            <label><strong>Role</strong><br></label><select
+                                                                                class="border rounded form-control form-control-sm"
+                                                                                multiple="" id="roles"
+                                                                                style="width: 219px;height: 50px;"
+                                                                                readonly=""></select></div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn btn-secondary" type="button"
+                                                               data-dismiss="modal">Close</a>
+                                                            <a class="btn btn-danger text-light" id="hrefDelete"
+                                                               href="">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane border rounded" role="tabpanel" id="tab-2"
+                         style="padding: 0px;height: 468px;line-height: 17px;letter-spacing: 0px;font-size: 15px;margin: 0px;width: 930px;">
+                        <h5 class="text-left" style="margin: -8px;padding: 24px;line-height: 0px;height: 44px;">Add new
+                            user</h5>
+                        <form action="#" th:action="@{/admin/add}" th:object="${user}"
+                              style="height: 434px;background-color: #ffffff;width: 928px;" method="post">
+                            <div class="form-row justify-content-center align-items-center"
+                                 style="width: 927px;margin: 0px;background-color: #ffffff;height: 312px;">
+                                <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                     style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                    <div class="form-group" style="margin: 0px;"><label><strong>User
+                                        name</strong><br></label><input class="form-control form-control-sm" type="text"
+                                                                        th:field="*{name}"
+                                                                        style="width: 219px;padding: 0px;"
+                                                                        value="User name"></div>
+                                </div>
+                                <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                     style="width: 362px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                    <div class="form-group" style="margin: 0px;">
+                                        <label><strong>Password</strong><br></label><input
+                                            class="form-control form-control-sm" type="text" th:field="*{password}"
+                                            style="width: 219px;height: 31px;padding: 0px;" value="Password"></div>
+                                </div>
+                                <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                     style="width: 356px;padding: 35px;margin: 295px;height: 78px;background-color: #ffffff;">
+                                    <div class="form-group" style="margin: 0px;">
+                                        <label><strong>Role</strong><br></label><select
+                                            class="border rounded form-control form-control-sm" multiple=""
+                                            style="width: 219px;height: 50px;" name="select">
+                                        <option value="ROLE_ADMIN">ADMIN</option>
+                                        <option value="ROLE_USER">USER</option>
+                                    </select></div>
+                                </div>
+                                <div class="col text-center d-flex flex-row align-items-center align-content-center align-self-center my-auto"
+                                     style="width: 356px;padding: 35px;margin: 289px;height: 78px;background-color: #ffffff;">
+                                    <div class="form-group" style="margin: 53px;">
+                                        <button class="btn btn-success btn-sm text-light" type="submit"
+                                                style="width: 125px;padding: 0px;">Add new user
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script src="/myscripts/example.js"></script>
+</body>
+</html>

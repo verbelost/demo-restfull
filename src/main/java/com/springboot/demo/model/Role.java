@@ -16,7 +16,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name")
+    @Column(name = "role")
     private String name;
 
     @Transient
@@ -41,6 +41,10 @@ public class Role implements GrantedAuthority {
 
     public String getName() {
         return name;
+    }
+
+    public String getSimpleName() {
+        return name.replace("ROLE_", "");
     }
 
     public void setName(String name) {
