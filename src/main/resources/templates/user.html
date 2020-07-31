@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -13,10 +13,9 @@
 <div>
     <nav class="navbar navbar-light navbar-expand-md bg-dark">
         <div class="container-fluid">
-            <span class="text-light"><strong th:text="${user.getUsername()}"></strong></span>
+            <span class="text-light"><strong id="nameTitle"></strong></span>
             <span class="text-light"> with roles: </span>
-            <span class="text-light" id="userRoles"><strong th:each="role : ${user.getRoles()}"
-                                             th:text="${role.getSimpleName()} + ' '"></strong></span>
+            <span class="text-light" id="roleTitle"></span>
             <ul class="nav navbar-nav flex-nowrap ml-auto">
                 <li class="nav-item" role="presentation"><a class="nav-link text-muted" href="/logout">Logout</a></li>
             </ul>
@@ -45,11 +44,10 @@
                         </thead>
                         <tbody style="height: 100px;">
                         <tr style="height: 36px;">
-                            <td style="width: 50px;height: 63px;" th:text="${user.getId()}"></td>
-                            <td style="height: 63px;width: 120px;" th:text="${user.getUsername()}"></td>
-                            <td style="height: 63px;width: 200px;" th:text="${user.getPassword()}"></td>
-                            <td style="height: 63px;width: 150px;" th:each="role : ${user.getRoles()}"
-                                th:text="${role.getSimpleName()} + ' '"></td>
+                            <td style="width: 50px;height: 63px;" id="id"></td>
+                            <td style="height: 63px;width: 120px;" id="name"></td>
+                            <td style="height: 63px;width: 200px;" id="pass"></td>
+                            <td style="height: 63px;width: 150px;" id="role"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -58,8 +56,9 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+<!--SCRIPTS-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

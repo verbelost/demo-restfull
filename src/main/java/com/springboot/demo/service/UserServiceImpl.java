@@ -23,14 +23,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void addUser(User user, String[] rolesValues) {
+    public void addUser(User user) {
         Set<Role> roles = new HashSet<>();
-        for (String role: rolesValues) {
-            if (roleRepository.countRoleByName(role) > 0) {
-                roles.add(roleRepository.getRoleByName(role));
+        for (Role role: user.getRoles()) {
+            if (roleRepository.countRoleByName(role.getName()) > 0) {
+                roles.add(roleRepository.getRoleByName(role.getName()));
             } else {
                 Role newRole = new Role();
-                newRole.setName(role);
+                newRole.setName(role.getName());
                 roleRepository.save(newRole);
                 roles.add(newRole);
             }
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void removeUser(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> listUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 

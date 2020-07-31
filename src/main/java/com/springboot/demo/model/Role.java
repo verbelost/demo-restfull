@@ -1,12 +1,13 @@
 package com.springboot.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
-// Этот класс реализует интерфейс GrantedAuthority, в котором необходимо переопределить только один метод getAuthority() (возвращает имя роли).
-// Имя роли должно соответствовать шаблону: «ROLE_ИМЯ», например, ROLE_USER.
+
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -19,11 +20,16 @@ public class Role implements GrantedAuthority {
     @Column(name = "role")
     private String name;
 
+    @JsonIgnore
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
     }
 
     public Role(Long id, String name) {
