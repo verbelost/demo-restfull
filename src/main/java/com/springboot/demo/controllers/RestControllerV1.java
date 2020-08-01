@@ -1,15 +1,13 @@
-package com.springboot.demo.rest;
+package com.springboot.demo.controllers;
 
 
 import com.springboot.demo.model.User;
 import com.springboot.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
